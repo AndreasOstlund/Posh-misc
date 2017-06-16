@@ -1,14 +1,13 @@
 <#
-	.SYNOPSIS
+    .SYNOPSIS
         Function copy files / directories to other servers and manage services related to the copy.
 
-	.DESCRIPTION
+    .DESCRIPTION
         The function starts a specified command which can have dynamically assigned parameters.
         Any specified services are stopped before the commands are run and started after the commands are done.
         It was written for copying/sync'ing files to other server, but can generally be made to run any command, not just copy commands.
 
         Switch -WhatIf can be used for a dry-run.
-
 
     .PARAMETER DestinationServer
         Specifies which server(s) that will be the receivers.        
@@ -26,7 +25,8 @@
                     CopyCmd="command";
                  }
             )
-        Ex
+			
+        Ex:
             @(
                 @{
                     CopyItem="c:\directory";
@@ -54,14 +54,14 @@
     .PARAMETER AsJob
         Specifies that the commands will run as background jobs.
 
-	.EXAMPLE
+    .EXAMPLE
         Sync-OLLFilesToServer -DestinationServer "server1","server2" -CopyItems @( @{CopyItem="c:\directory"; CopyCmd="robocopy `"%SOURCEITEM%`" `"%DESTINATIONITEM%`" /E "; }, @{CopyItem="c:\windows\system32\drivers\etc\hosts"; CopyCmd="copy-item `"%SOURCEITEM%`" `"%DESTINATIONITEM%`" -verbose";}, @{CopyItem="d:\inetpub\wwwroot"; CopyCmd="robocopy `"%SOURCEITEM%`" `"%DESTINATIONITEM%`" /E /DCOPY:T /LOG+:d:\logs\appcopy_%CURRENTDATE%.log /TEE /NP";} )
         
         Copies c:\directory to servers server1 and server2 using robocopy 
         Copies c:\windows\system32\drivers\etc\hosts to sever1 and server2 using copy-item
         Copies d:\inetpub\wwwroot to server1 and server2 using robocopy
 
-	.EXAMPLE
+    .EXAMPLE
         Sync-OLLFilesToServer -DestinationServer "server1","server2" -CopyItems @( @{CopyItem="c:\directory"; CopyCmd="robocopy `"%SOURCEITEM%`" `"%DESTINATIONITEM%`" /E "; }, @{CopyItem="c:\windows\system32\drivers\etc\hosts"; CopyCmd="copy-item `"%SOURCEITEM%`" `"%DESTINATIONITEM%`" -verbose";}, @{CopyItem="d:\inetpub\wwwroot"; CopyCmd="robocopy `"%SOURCEITEM%`" `"%DESTINATIONITEM%`" /E /DCOPY:T /LOG+:d:\logs\appcopy_%CURRENTDATE%.log /TEE /NP";} ) -AsJob -StopStartService "W3SVC,Spooler"
         
         Stops services W3SVC and spooler
@@ -72,9 +72,9 @@
 
         Starts services W3SVC and spooler
 
-	.NOTES
+    .NOTES
 
-	.LINK
+    .LINK
 
 #>
 Function Sync-OLLFilesToServer {
@@ -96,11 +96,11 @@ Function Sync-OLLFilesToServer {
     # Generated with New-FortikaPSFunction
 
     BEGIN {
-		# If -debug is set, change $DebugPreference so that output is a little less annoying.
-		#	http://learn-powershell.net/2014/06/01/prevent-write-debug-from-bugging-you/
-		If ($PSBoundParameters['Debug']) {
-			$DebugPreference = 'Continue'
-		}
+        # If -debug is set, change $DebugPreference so that output is a little less annoying.
+        #    http://learn-powershell.net/2014/06/01/prevent-write-debug-from-bugging-you/
+        If ($PSBoundParameters['Debug']) {
+            $DebugPreference = 'Continue'
+        }
 
         $SourceServer = $env:COMPUTERNAME
 
