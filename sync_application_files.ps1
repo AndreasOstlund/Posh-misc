@@ -108,9 +108,8 @@ Function Sync-OLLFilesToServer {
         #$SourceServer = $env:COMPUTERNAME
 
         if($StopStartService) {
-
             if($PSCmdlet.ShouldProcess("stop services")) {
-                Invoke-Command -ComputerName $DestinationServer -ScriptBlock { Stop-Service -Name $using:StartSTopService -Force }
+                Invoke-Command -ComputerName $DestinationServer -ScriptBlock { Stop-Service -Name $using:StopStartService -Force }
             }
         }
 
@@ -181,6 +180,14 @@ Function Sync-OLLFilesToServer {
                 Write-Warning "Switch AsJob specified but there's nothing in the joblist!"
             }
         }
+
+        # Start the services
+        if($StopStartService) {
+            if($PSCmdlet.ShouldProcess("stop services")) {
+                Invoke-Command -ComputerName $DestinationServer -ScriptBlock { Start-Service -Name $using:StopStartService -Force }
+            }
+        }
+
     }
 
     PROCESS {
