@@ -80,7 +80,10 @@
 Function Sync-OLLFilesToServer {
     [cmdletBinding(SupportsShouldProcess=$True, ConfirmImpact="Low")]
     Param(
-        [Parameter(Mandatory=$True)]
+        [Parameter(Mandatory=$False)]
+        [string]$SourceServer=$Env:ComputerName
+
+        ,[Parameter(Mandatory=$True)]
         [string[]]$DestinationServer
 
         ,[Parameter(Mandatory=$True)]
@@ -102,7 +105,7 @@ Function Sync-OLLFilesToServer {
             $DebugPreference = 'Continue'
         }
 
-        $SourceServer = $env:COMPUTERNAME
+        #$SourceServer = $env:COMPUTERNAME
 
         if($StopStartService) {
 
@@ -164,6 +167,7 @@ Function Sync-OLLFilesToServer {
         }
 
         # Wait for jobs
+        # could use wait-job here, but some user interaction is always nice
         if($AsJob) {
             if($JobList) {
                 Do {
@@ -177,8 +181,6 @@ Function Sync-OLLFilesToServer {
                 Write-Warning "Switch AsJob specified but there's nothing in the joblist!"
             }
         }
-
-
     }
 
     PROCESS {
